@@ -1,0 +1,1 @@
+# SPOJ competitive programming
