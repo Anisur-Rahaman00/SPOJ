@@ -1,0 +1,56 @@
+.model small
+.stack 100h
+include "emu8086.inc"
+.data
+array db 1, 2, 3, 4, 5 ; The array to be reversed
+array_size equ $ - array ; Calculate the size of the array
+
+.code
+    main proc
+        mov ax, @data
+        mov ds, ax
+
+        mov si, 0 ; Initialize source index to point to the first element of the array
+        mov di, array_size - 1 ; Initialize destination index to point to the last element of the array
+
+    reverse_loop:
+        cmp si, di ; Compare source index with destination index
+        jge reverse_done ; If source index is greater than or equal to destination index, the array has been reversed
+
+        mov al, array[si] ; Load the byte at the source index into AL
+        xchg al, array[di] ; Exchange the byte at the destination index with AL
+        mov array[si], al ; Store the byte originally at the source index into the destination index
+
+        inc si ; Increment the source index
+        dec di ; Decrement the destination index
+
+        jmp reverse_loop ; Jump back to the reverse_loop label
+
+    reverse_done:
+        ; The array has been reversed, you can add your code here to print the reversed array
+    
+    
+    mov si, offset array
+    mov cx, 5
+    
+    print 'You array '
+        loopx:
+            mov dl, [si]
+            add dl, 48
+            
+            mov ah, 02h
+            int 21h
+            
+            mov dl, 32
+            mov ah, 02h
+            int 21h 
+            
+            inc si
+            loop loopx
+        mov ah, 4ch ; Exit to DOS
+        int 21h
+    main endp
+
+    end main
+
+
