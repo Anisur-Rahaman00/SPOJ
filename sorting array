@@ -1,0 +1,30 @@
+.model small
+.stack 100h
+.data
+arr dw 0x001,0x003,0x004
+.code
+main proc
+    mov ax,@data
+    mov ds,ax
+    
+    mov dx,19
+    outerloop:
+    mov cx,dx
+    mov bx,offset arr
+    innerloop:
+    mov ax,[bx]
+    cmp ax,[bx+2]
+    ja swap
+    JMP notswap
+    swap:
+    xchg ax,[bx+2]
+    mov [bx],ax
+    notswap:
+    add bx,2
+    loop innerloop
+    dec dx
+    cmp dx,0
+    jne outerloop
+    main endp
+hlt
+.exit
